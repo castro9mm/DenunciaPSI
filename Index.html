@@ -2,10 +2,96 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Site</title>
+    <title>Denúncia Anônima de Assédio Moral</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e6f2ff; /* azul claro */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #ffffff; /* branco */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            font-family: "Georgia", serif;
+            font-size: 28px;
+            color: #003366;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #003366;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input[type="file"] {
+            border: none;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004d99;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #333333;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-    <h1>Olá, mundo!</h1>
-    <p>Este é meu primeiro site online com GitHub Pages.</p>
+    <div class="container">
+        <h1>Denúncia Anônima de Assédio Moral</h1>
+        <form>
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome">
+
+            <label for="cargo">Cargo que ocupa:</label>
+            <input type="text" id="cargo" name="cargo">
+
+            <label for="tempo">Tempo na Empresa:</label>
+            <input type="text" id="tempo" name="tempo">
+
+            <label for="empresa">Nome da Empresa:</label>
+            <input type="text" id="empresa" name="empresa">
+
+            <label for="descricao">Descrição Completa:</label>
+            <textarea id="descricao" name="descricao" rows="6"></textarea>
+
+            <label for="anexo">Anexos de comprovação:</label>
+            <input type="file" id="anexo" name="anexo" multiple>
+
+            <button type="submit">Enviar Denúncia</button>
+        </form>
+        <div class="footer">
+            "Todos os dados aqui declarados estão sob sigilo legal da profissional de saúde mental 
+            <strong>Madley Nascimento CRP 12345</strong>"
+        </div>
+    </div>
 </body>
 </html>
