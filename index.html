@@ -74,6 +74,19 @@
             box-shadow: 0 0 5px rgba(0, 102, 204, 0.2);
         }
 
+        input.error,
+        textarea.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.2);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
         textarea {
             resize: vertical;
             min-height: 120px;
@@ -101,6 +114,11 @@
             transform: scale(0.98);
         }
 
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
         .footer {
             margin-top: 40px;
             padding-top: 20px;
@@ -118,6 +136,17 @@
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .error-alert {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
             border-radius: 5px;
             text-align: center;
         }
@@ -145,22 +174,29 @@
 
             <label for="email">Email de Contato (opcional):</label>
             <input type="email" id="email" name="email" placeholder="seu.email@example.com">
+            <div class="error-message" id="emailError">Por favor, insira um email válido</div>
 
             <label for="cargo">Cargo que ocupa:</label>
             <input type="text" id="cargo" name="cargo" placeholder="Digite seu cargo" required>
+            <div class="error-message" id="cargoError">Este campo é obrigatório</div>
 
             <label for="tempo">Tempo na Empresa:</label>
             <input type="text" id="tempo" name="tempo" placeholder="Ex: 2 anos e 3 meses">
 
             <label for="empresa">Nome da Empresa:</label>
             <input type="text" id="empresa" name="empresa" placeholder="Digite o nome da empresa" required>
+            <div class="error-message" id="empresaError">Este campo é obrigatório</div>
 
             <label for="descricao">Descrição Completa dos Fatos:</label>
             <textarea id="descricao" name="descricao" placeholder="Descreva detalhadamente o que ocorreu, datas e pessoas envolvidas" required></textarea>
+            <div class="error-message" id="descricaoError">Este campo é obrigatório e deve ter pelo menos 10 caracteres</div>
 
-            <button type="submit">Enviar Denúncia</button>
+            <button type="submit" id="submitBtn">Enviar Denúncia</button>
             <div class="success-message" id="successMessage">
                 ✓ Denúncia enviada com sucesso! Obrigado por sua confiança.
+            </div>
+            <div class="error-alert" id="errorAlert">
+                ✗ Houve um erro ao enviar a denúncia. Tente novamente.
             </div>
         </form>
 
@@ -172,43 +208,107 @@
     </div>
 
     <script>
+        // Validar email
+        function validarEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Limpar mensagens de erro
+        function limparErros() {
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
+        }
+
+        // Validar formulário
+        function validarFormulario() {
+            limparErros();
+            let valido = true;
+
+            const cargo = document.getElementById('cargo').value.trim();
+            if (!cargo) {
+                document.getElementById('cargoError').style.display = 'block';
+                document.getElementById('cargo').classList.add('error');
+                valido = false;
+            }
+
+            const empresa = document.getElementById('empresa').value.trim();
+            if (!empresa) {
+                document.getElementById('empresaError').style.display = 'block';
+                document.getElementById('empresa').classList.add('error');
+                valido = false;
+            }
+
+            const descricao = document.getElementById('descricao').value.trim();
+            if (!descricao || descricao.length < 10) {
+                document.getElementById('descricaoError').style.display = 'block';
+                document.getElementById('descricao').classList.add('error');
+                valido = false;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            if (email && !validarEmail(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                document.getElementById('email').classList.add('error');
+                valido = false;
+            }
+
+            return valido;
+        }
+
         document.getElementById('denunciaForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            document.getElementById('errorAlert').style.display = 'none';
+
+            // Validar formulário
+            if (!validarFormulario()) {
+                return;
+            }
+
+            // Desabilitar botão durante envio
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
 
             // Coletando dados do formulário
-            const formData = {
-                nome: document.getElementById('nome').value,
-                email: document.getElementById('email').value,
-                cargo: document.getElementById('cargo').value,
-                tempo: document.getElementById('tempo').value,
-                empresa: document.getElementById('empresa').value,
-                descricao: document.getElementById('descricao').value,
-                data: new Date().toLocaleString('pt-BR')
-            };
+            const formData = new FormData();
+            formData.append('nome', document.getElementById('nome').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('cargo', document.getElementById('cargo').value);
+            formData.append('tempo', document.getElementById('tempo').value);
+            formData.append('empresa', document.getElementById('empresa').value);
+            formData.append('descricao', document.getElementById('descricao').value);
+            formData.append('data', new Date().toLocaleString('pt-BR'));
 
-            // Enviando dados para seu email via FormSubmit (serviço gratuito)
-            fetch('https://formspree.io/f/xkggeqvo', {
+            // Enviando dados para Formspree
+            // IMPORTANTE: Substitua 'SEU_ID_AQUI' pelo ID do seu formulário no Formspree
+            fetch('https://formspree.io/f/SEU_ID_AQUI', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                body: formData
             })
             .then(response => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Denúncia';
+                
                 if (response.ok) {
                     // Mostra mensagem de sucesso
                     document.getElementById('successMessage').style.display = 'block';
                     // Limpa o formulário
                     document.getElementById('denunciaForm').reset();
+                    limparErros();
                     // Esconde a mensagem após 5 segundos
                     setTimeout(() => {
                         document.getElementById('successMessage').style.display = 'none';
                     }, 5000);
+                } else {
+                    throw new Error('Erro na resposta');
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Houve um erro ao enviar a denúncia. Tente novamente.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Denúncia';
+                document.getElementById('errorAlert').style.display = 'block';
             });
         });
     </script>
