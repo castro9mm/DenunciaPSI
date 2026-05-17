@@ -342,10 +342,7 @@
           const form = e.target;
           const formData = new FormData(form);
         
-        document.getElementById('denunciaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.getElementById('errorAlert').style.display = 'none';
-
+      
             // Validar formulário
             if (!validarFormulario()) {
                 return;
