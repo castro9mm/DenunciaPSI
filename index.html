@@ -6,39 +6,66 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('background.jpg') no-repeat center center fixed;
+      background: url('images/logo main com escrita sem fundo.png') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       text-align: center;
       padding: 40px;
     }
-    h1 { margin-bottom: 20px; }
+    h1 {
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
     form {
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 8px;
+      background: rgba(0,0,0,0.7);
+      padding: 30px;
+      border-radius: 12px;
       max-width: 600px;
       margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
-    label { display: block; margin-top: 10px; text-align: left; }
+    label {
+      display: block;
+      margin-top: 15px;
+      text-align: left;
+      font-weight: bold;
+    }
     input[type="text"], input[type="email"], textarea {
-      width: 100%; padding: 10px; margin-top: 5px;
-      border: none; border-radius: 6px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
     }
-    .file-upload { margin-top: 15px; margin-bottom: 15px; text-align: left; }
+    .file-upload {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
     .file-upload input[type="file"] { display: none; }
     .file-upload label {
-      background-color: #007bff; color: #fff;
-      padding: 10px 15px; border-radius: 6px;
-      cursor: pointer; transition: background-color 0.3s;
+      background-color: #007bff;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
       display: inline-block;
+      font-size: 14px;
     }
     .file-upload label:hover { background-color: #0056b3; }
     button {
-      background-color: #28a745; color: #fff;
-      padding: 12px 20px; border: none; border-radius: 6px;
-      cursor: pointer; font-size: 16px; transition: background-color 0.3s;
-      margin-top: 10px;
+      background-color: #28a745;
+      color: #fff;
+      padding: 14px 22px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      margin-top: 15px;
+      width: 100%;
     }
     button:hover { background-color: #218838; }
   </style>
@@ -47,59 +74,3 @@
   <h1>Denúncia Anônima de Assédio Moral</h1>
 
   <form id="denunciaForm" action="https://formspree.io/f/mlgzvypk" method="POST" enctype="multipart/form-data">
-    <!-- Campos originais -->
-    <label for="nome">Nome (opcional):</label>
-    <input type="text" id="nome" name="nome">
-
-    <label for="email">Email (opcional):</label>
-    <input type="email" id="email" name="email">
-
-    <label for="departamento">Departamento (opcional):</label>
-    <input type="text" id="departamento" name="departamento">
-
-    <label for="mensagem">Descrição da denúncia:</label>
-    <textarea id="mensagem" name="mensagem" rows="6" required></textarea>
-
-    <!-- Novo botão de anexar arquivos -->
-    <div class="file-upload">
-      <input type="file" id="fileUpload" name="fileUpload" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
-      <label for="fileUpload">📎 Anexar arquivo (máx. 10MB)</label>
-    </div>
-
-    <!-- Botão de envio -->
-    <button id="submit" type="submit">Enviar denúncia</button>
-  </form>
-
-  <script>
-    document.getElementById("denunciaForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-
-      // Validação do tamanho do arquivo
-      const file = document.getElementById("fileUpload").files[0];
-      if (file && file.size > 10 * 1024 * 1024) {
-        alert("O arquivo excede o limite de 10MB.");
-        return;
-      }
-
-      try {
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: formData,
-          headers: { "Accept": "application/json" }
-        });
-
-        if (response.ok) {
-          alert("✓ Denúncia enviada com sucesso!");
-          form.reset();
-        } else {
-          alert("✗ Houve um erro ao enviar a denúncia. Tente novamente.");
-        }
-      } catch (error) {
-        alert("✗ Houve um erro ao enviar a denúncia. Tente novamente.");
-      }
-    });
-  </script>
-</body>
-</html>
