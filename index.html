@@ -337,6 +337,11 @@
             return valido;
         }
 
+        document.getElementById("denunciaForm").addEventListener("submit", async function(e) {
+          e.preventDefault();
+          const form = e.target;
+          const formData = new FormData(form);
+        
         document.getElementById('denunciaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('errorAlert').style.display = 'none';
@@ -392,6 +397,31 @@
                 document.getElementById('errorAlert').style.display = 'block';
             });
         });
+
+            // Validação do tamanho do arquivo
+  const file = document.getElementById("fileUpload").files[0];
+  if (file && file.size > 10 * 1024 * 1024) {
+    alert("O arquivo excede o limite de 10MB.");
+    return;
+  }
+
+  try {
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: formData,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (response.ok) {
+      alert("✓ Denúncia enviada com sucesso!");
+      form.reset();
+    } else {
+      alert("✗ Houve um erro ao enviar a denúncia. Tente novamente.");
+    }
+  } catch (error) {
+    alert("✗ Houve um erro ao enviar a denúncia. Tente novamente.");
+  }
+});
     </script>
 </body>
 </html>
