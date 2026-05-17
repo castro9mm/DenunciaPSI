@@ -1,6 +1,364 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denúncia Anônima de Assédio Moral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/logo main com escrita sem fundo.png');
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: 0 0;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 51, 102, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/logo main com escrita sem fundo.png');
+            background-size: 150px 150px;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-position: 0 0;
+            opacity: 0.04;
+            pointer-events: none;
+            border-radius: 10px;
+            z-index: 0;
+        }
+
+        .container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: "Playfair Display", serif;
+            font-size: 32px;
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #003366;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 2px solid #cccccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.2);
+        }
+
+        input.error,
+        textarea.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.2);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #004d99;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            text-align: center;
+            font-size: 13px;
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .error-alert {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Denúncia Anônima de Assédio Moral</h1>
+        <p class="subtitle">Seu depoimento é importante e será tratado com total confidencialidade</p>
+
+        <form id="denunciaForm">
+            <label for="nome">Nome Completo (opcional):</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome ou deixe em branco para manter anonimato">
+
+            <label for="email">Email de Contato (opcional):</label>
+            <input type="email" id="email" name="email" placeholder="seu.email@example.com">
+            <div class="error-message" id="emailError">Por favor, insira um email válido</div>
+
+            <label for="cargo">Cargo que ocupa:</label>
+            <input type="text" id="cargo" name="cargo" placeholder="Digite seu cargo" required>
+            <div class="error-message" id="cargoError">Este campo é obrigatório</div>
+
+            <label for="tempo">Tempo na Empresa:</label>
+            <input type="text" id="tempo" name="tempo" placeholder="Ex: 2 anos e 3 meses">
+
+            <label for="empresa">Nome da Empresa:</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Digite o nome da empresa" required>
+            <div class="error-message" id="empresaError">Este campo é obrigatório</div>
+
+            <label for="descricao">Descrição Completa dos Fatos:</label>
+            <textarea id="descricao" name="descricao" placeholder="Descreva detalhadamente o que ocorreu, datas e pessoas envolvidas" required></textarea>
+            <div class="error-message" id="descricaoError">Este campo é obrigatório e deve ter pelo menos 10 caracteres</div>
+
+            <button type="submit" id="submitBtn">Enviar Denúncia</button>
+            <div class="success-message" id="successMessage">
+                ✓ Denúncia enviada com sucesso! Obrigado por sua confiança.
+            </div>
+            <div class="error-alert" id="errorAlert">
+                ✗ Houve um erro ao enviar a denúncia. Tente novamente.
+            </div>
+        </form>
+
+        <div class="footer">
+            <p>"Todos os dados aqui declarados estão sob sigilo legal da profissional de saúde mental</p>
+            <p><strong>Madley Nascimento CRP 12345</strong></p>
+            <p style="margin-top: 15px; font-size: 12px;">Os dados coletados serão utilizados exclusivamente para fins de investigação interna e proteção dos denunciantes.</p>
+        </div>
+    </div>
+
+    <script>
+        // Validar email
+        function validarEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Limpar mensagens de erro
+        function limparErros() {
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error'));
+        }
+
+        // Validar formulário
+        function validarFormulario() {
+            limparErros();
+            let valido = true;
+
+            const cargo = document.getElementById('cargo').value.trim();
+            if (!cargo) {
+                document.getElementById('cargoError').style.display = 'block';
+                document.getElementById('cargo').classList.add('error');
+                valido = false;
+            }
+
+            const empresa = document.getElementById('empresa').value.trim();
+            if (!empresa) {
+                document.getElementById('empresaError').style.display = 'block';
+                document.getElementById('empresa').classList.add('error');
+                valido = false;
+            }
+
+            const descricao = document.getElementById('descricao').value.trim();
+            if (!descricao || descricao.length < 10) {
+                document.getElementById('descricaoError').style.display = 'block';
+                document.getElementById('descricao').classList.add('error');
+                valido = false;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            if (email && !validarEmail(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                document.getElementById('email').classList.add('error');
+                valido = false;
+            }
+
+            return valido;
+        }
+
+        document.getElementById('denunciaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('errorAlert').style.display = 'none';
+
+            // Validar formulário
+            if (!validarFormulario()) {
+                return;
+            }
+
+            // Desabilitar botão durante envio
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            // Coletando dados do formulário
+            const formData = new FormData();
+            formData.append('nome', document.getElementById('nome').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('cargo', document.getElementById('cargo').value);
+            formData.append('tempo', document.getElementById('tempo').value);
+            formData.append('empresa', document.getElementById('empresa').value);
+            formData.append('descricao', document.getElementById('descricao').value);
+            formData.append('data', new Date().toLocaleString('pt-BR'));
+
+            // Enviando dados para Formspree
+            // IMPORTANTE: Substitua 'SEU_ID_AQUI' pelo ID do seu formulário no Formspree
+            fetch('https://formspree.io/f/mlgzvypk', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Denúncia';
+                
+                if (response.ok) {
+                    // Mostra mensagem de sucesso
+                    document.getElementById('successMessage').style.display = 'block';
+                    // Limpa o formulário
+                    document.getElementById('denunciaForm').reset();
+                    limparErros();
+                    // Esconde a mensagem após 5 segundos
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                } else {
+                    throw new Error('Erro na resposta');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Denúncia';
+                document.getElementById('errorAlert').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
   <meta charset="UTF-8">
   <title>Denúncia Anônima</title>
   <style>
