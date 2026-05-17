@@ -11,7 +11,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
@@ -36,6 +35,40 @@
             opacity: 0.2;
             pointer-events: none;
             z-index: -1;
+        }
+              .file-upload {
+          margin-top: 15px;
+          margin-bottom: 15px;
+          text-align: left;
+        }
+        .file-upload input[type="file"] {
+          display: none;
+        }
+        .file-upload label {
+          background-color: #007bff;
+          color: #fff;
+          padding: 10px 15px;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          display: inline-block;
+        }
+        .file-upload label:hover {
+          background-color: #0056b3;
+        }
+        button {
+          background-color: #28a745;
+          color: #fff;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background-color 0.3s;
+          margin-top: 10px;
+        }
+        button:hover {
+          background-color: #218838;
         }
 
         .container {
@@ -234,13 +267,18 @@
             <textarea id="descricao" name="descricao" placeholder="Descreva detalhadamente o que ocorreu, datas e pessoas envolvidas" required></textarea>
             <div class="error-message" id="descricaoError">Este campo é obrigatório e deve ter pelo menos 10 caracteres</div>
 
+             <!-- Botão estilizado de anexar arquivos -->
+            <div class="file-upload">
+              <input type="file" id="fileUpload" name="fileUpload" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+              <label for="fileUpload">📎 Anexar arquivo (máx. 10MB)</label>
+            </div>
+
+            
             <button type="submit" id="submitBtn">Enviar Denúncia</button>
             <div class="success-message" id="successMessage">
                 ✓ Denúncia enviada com sucesso! Obrigado por sua confiança.
             </div>
-            <div class="error-alert" id="errorAlert">
-                ✗ Houve um erro ao enviar a denúncia. Tente novamente.
-            </div>
+           
         </form>
 
         <div class="footer">
@@ -356,93 +394,4 @@
         });
     </script>
 </body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Denúncia Anônima</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: url('background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      text-align: center;
-      padding: 40px;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    form {
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      text-align: left;
-    }
-    input[type="text"], textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: none;
-      border-radius: 6px;
-    }
-    .file-upload {
-      margin-top: 15px;
-      margin-bottom: 15px;
-      text-align: left;
-    }
-    .file-upload input[type="file"] {
-      display: none;
-    }
-    .file-upload label {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      display: inline-block;
-    }
-    .file-upload label:hover {
-      background-color: #0056b3;
-    }
-    button {
-      background-color: #28a745;
-      color: #fff;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-  </style>
-</head>
-<body>
-  <h1>Denúncia Anônima de Assédio Moral</h1>
-
-  <form id="denunciaForm" action="https://formspree.io/f/mlgzvypk" method="POST" enctype="multipart/form-data">
-    
-    <!-- Campos existentes -->
-    <label for="nome">Nome (opcional):</label>
-    <input type="text" id="nome" name="nome">
-
-    <label for="mensagem">Descrição da denúncia:</label>
-    <textarea id="mensagem" name="mensagem" rows="6" required></textarea>
-
-    <!-- Botão estilizado de anexar arquivos -->
-    <div class="file-upload">
-      <input type="file" id="fileUpload" name="fileUpload" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
-      <label for="fileUpload">📎 Anexar arquivo (máx. 10MB)</label>
-    </div>
-
+</html>
